@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": "684e",
+      "email": "michael@arch.com",
+      "login": "Amott",
+      "role": "admin",
+      "gender": "male"
+    },
+    {
+      "id": "a717",
+      "email": "gossow@arch.com",
+      "login": "Angela",
+      "role": "manager",
+      "gender": "female"
+    },
+    {
+      "id": "b101",
+      "email": "sheo@tes.com",
+      "login": "Sheogorath",
+      "role": "manager",
+      "gender": "male"
+    },
+    {
+      "id": "ff16",
+      "email": "purple@mail.gb.uk",
+      "login": "Stranger",
+      "role": "user",
+      "gender": "male"
+    }
+  ]
+}
