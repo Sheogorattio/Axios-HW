@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useForm} from "react-hook-form"
 import axios from "axios";
 import Select from "./Select";
 import Gender from "./Gender";
@@ -10,6 +11,22 @@ interface GenderType {
 }
 
 function Form() {
+    const {register, handleSubmit,
+        formState: {touchedFields, errors},
+    } = useForm({defaultValues : {email: "", login: ""}});
+
+    const fromDataSet = (data:any) => {
+        console.log({
+            email: email,
+            login: login,
+            role: role,
+            gender: gender.male? "male" : gender.female ? "female" : "undefined"
+        });  
+        if(!(errors.email && errors.login)){
+            sendData();
+        }
+    };
+
     const [email, setEmail] = useState("");
     const [login, setLogin] = useState("");
 
@@ -42,21 +59,36 @@ function Form() {
             <p>Email: {email}</p> 
             <p>Login: {login}</p>
             <p>Role: {role}</p>
-            <p>Gender: {gender.male? "male" : gender.female ? "female" : ""}</p>
+            <p>Gender: {gender.male? "male" : gender.female ? "female" : "undefined"}</p>
         </div>
         <hr />
         <div className="d-flex">
-            <form className="col-6" onSubmit={sendData}>
+            <form className="col-6" onSubmit={handleSubmit(fromDataSet)}>
                 <div style={{marginTop:10}}>
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                        <input type="email" className="form-control" name='email' id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e)=>setEmail(e.target.value)}/>
+                        <input type="text" {...register("email", {required: true, maxLength:80, pattern : /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/i})}
+                                className="form-control"
+                                id="exampleInputEmail1" aria-describedby="emailHelp" 
+                                onChange={(e)=>setEmail(e.target.value)}/>
+                        <div style={{color: "red"}}>
+                            { touchedFields.email && !email && (<p>Email is required!</p>)}
+                            { errors.email && <p>Email is not correct!</p>}
+                        </div>
                         <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleInputPassword1" className="form-label">Login</label>
-                        <input type="text" className="form-control" name='login' id="exampleInputLogin" onChange={(e)=>setLogin(e.target.value)}/>
+                        <input  type="text" {...register("login", {required: true, maxLength:30})}
+                                className="form-control"
+                                id="exampleInputLogin" onChange={(e)=>setLogin(e.target.value)}/>
+                        <div style={{color: "red"}}>
+                            { touchedFields.login && !login && (<p style={{color: "red"}}>Login is required!</p>)}
+                            { errors.login && <p>Login is not correct!</p>}
+                        </div>
                     </div>
+
+                    
         
                     <Select handleRoleSelect = {handleRoleSelect} ></Select>
         
